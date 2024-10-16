@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+    <h1>App Dashboard</h1>
+
+    <div id="appList">
+        <!-- Dynamically generated list of apps will go here -->
+    </div>
+
+    <script>
+        // Load uploaded apps from local storage
+        document.addEventListener("DOMContentLoaded", function () {
+            const uploadedApps = JSON.parse(localStorage.getItem("uploadedApps")) || [];
+            const appList = document.getElementById("appList");
+
+            if (uploadedApps.length === 0) {
+                appList.innerHTML = "<p>No apps uploaded yet.</p>";
+                return;
+            }
+
+            uploadedApps.forEach(app => {
+                const appDiv = document.createElement("div");
+                appDiv.className = "app-item";
+                appDiv.innerHTML = `
+                    <h2>${app.appName}</h2>
+                    <p>Bundle ID: ${app.bundleId}</p>
+                    <p>Version: ${app.version}</p>
+                    <a href="${app.plistUrl}" download="${app.appName}.plist">Download Info.plist</a> |
+                    <a href="${app.ipaUrl}" download="${app.appName}.ipa">Download IPA</a>
+                `;
+                appList.appendChild(appDiv);
+            });
+        });
+    </script>
+</body>
+</html>
